@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDT SÜDBAU - Checklist Interactivo</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --success: #22c55e;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        header {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        h1 {
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        .progress-container {
+            background-color: var(--border-color);
+            border-radius: 8px;
+            height: 20px;
+            width: 100%;
+            margin-bottom: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        .progress-bar {
+            background-color: var(--success);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        .progress-text {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            top: 0;
+            left: 0;
+            font-size: 12px;
+            font-weight: bold;
+            color: #333;
+            line-height: 20px;
+        }
+        .section {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        details {
+            margin-bottom: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--card-bg);
+        }
+        summary {
+            padding: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            background-color: #f1f5f9;
+            border-radius: 6px;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        summary::-webkit-details-marker {
+            display: none;
+        }
+        summary::after {
+            content: '▼';
+            font-size: 0.8em;
+            color: var(--text-muted);
+        }
+        details[open] summary {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        details[open] summary::after {
+            content: '▲';
+        }
+        .checklist {
+            padding: 15px;
+        }
+        .check-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        .check-item input[type="checkbox"] {
+            margin-top: 5px;
+            margin-right: 12px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+        .check-item label {
+            cursor: pointer;
+            flex: 1;
+        }
+        .check-item.completed label {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+        .controls {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: var(--text-muted);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button:hover {
+            background-color: #475569;
+        }
+        h2 { margin-top: 0; color: #334155; }
+        h3 { color: #475569; font-size: 1.1em; margin-top: 15px; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>SÜDBAU S.A. · Equipo en marcha</h1>
+        <p>PDT práctico de implementación in house (SDB-EST-CLOUD-001 · Rev: 01)</p>
+    </header>
+
+    <div class="controls">
+        <button id="resetBtn">Reiniciar Progreso</button>
+    </div>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+        <div class="progress-text" id="progressText">0% (0/0)</div>
+    </div>
+
+    <div id="checklist-container">
+        <!-- El contenido se generará con JavaScript para mantener el HTML limpio y estructurado -->
+    </div>
+</div>
+
+<script>
+    const checklistData = [
+        {
+            title: "Secciones Iniciales",
+            items: [
+                {
+                    subtitle: "1. Por dónde empezar",
+                    tasks: [
+                        "Luis: abrir SDB-001 y conversar meta, disponibilidad y una OT de referencia.",
+                        "Irma: respaldar el HTML y JSON vigentes; tomar SDB-003 y su ajuste SDB-003.1.",
+                        "María: abrir SDB-002 para reutilizar las extracciones existentes y preparar muestra autorizada.",
+                        "Cata: leer SDB-006, bosquejar la pantalla y acordar contrato con María.",
+                        "Todos: confirmar un revisor competente por tarea y reservar tiempo para ayudarse.",
+                        "Seleccionar sólo las tarjetas que entren en la capacidad acordada."
+                    ]
+                },
+                {
+                    subtitle: "3. Ajuste necesario del tablero (SDB-003.1)",
+                    tasks: [
+                        "Exportar el JSON/HTML vigente antes de cualquier cambio.",
+                        "Separar estado del trabajo de ambiente/resultado de entrega.",
+                        "Mantener las siete columnas.",
+                        "Para software, conservar recorrido. Permitir cierre en TEST con pruebas.",
+                        "No deducir ambiente real desde una casilla. Registrar versión y evidencia.",
+                        "Permitir que una dependencia se satisfaga por su resultado aceptado en el ambiente requerido.",
+                        "Conservar tipos: una tarea de software no se convierte en documento.",
+                        "Versionar el esquema del JSON. Migrar a una copia nueva sin pérdida.",
+                        "Reabrir o cambiar alcance invalida validaciones afectadas.",
+                        "Probar exportación/importación, dependencias, documentos, TEST, PROD, WIP y respaldo."
+                    ]
+                },
+                {
+                    subtitle: "7.1 Preparar una sesión (Claude/Codex)",
+                    tasks: [
+                        "Abrir el repositorio/carpeta correctos; confirmar rama y alcance de acceso.",
+                        "Leer AGENTS.md, CLAUDE.md y reglas locales aplicables.",
+                        "Identificar tarjeta, versión, dependencias, datos permitidos y ambiente.",
+                        "Abrir prompts/ejecutar/SDB-xxx.md y pegarlo en uno de los asistentes.",
+                        "Si falta información, pedir que avance con lo verificable (marcar mocks).",
+                        "Guardar un resumen de sesión con rutas, decisiones y comandos ejecutados."
+                    ]
+                },
+                {
+                    subtitle: "8. Qué debe entregar siempre el asistente",
+                    tasks: [
+                        "Archivos o cambio concreto con rutas reales.",
+                        "Criterios de aceptación cotejados uno por uno.",
+                        "Comandos realmente ejecutados, ambiente, versión y resultado.",
+                        "Defectos y límites, con impacto y siguiente acción.",
+                        "Instrucciones para reproducir la demo y revertir/recuperar.",
+                        "Resumen para el tablero (qué cambió, evidencia, próximo paso).",
+                        "Decisiones humanas pendientes con función responsable."
+                    ]
+                },
+                {
+                    subtitle: "12. Cómo mantiene Irma la copia común",
+                    tasks: [
+                        "Acordar quién es la persona editora de esta quincena.",
+                        "Exportar respaldo JSON de la copia principal antes de consolidar.",
+                        "Recibir actualizaciones del equipo; revisar contradicciones antes de editar.",
+                        "Actualizar sólo campos respaldados por evidencia; registrar autor de la decisión.",
+                        "Usar 'Compartir / guardar' → descargar HTML actualizado.",
+                        "Si importa JSON, probar primero con respaldo.",
+                        "Guardar código, PR y evidencias en lugar institucional; el HTML sólo referencias."
+                    ]
+                },
+                {
+                    subtitle: "14. Controles de cierre del PDT",
+                    tasks: [
+                        "Confirmar roles, capacidad, fecha S1 y usuarios/repositorio reales.",
+                        "Aplicar y aceptar SDB-003.1 antes de depender del cierre automático de predecesoras.",
+                        "Acordar copia principal, repo de código y lugar restringido para datos/evidencia.",
+                        "Elegir muestra/caso real autorizado y registrar partes sintéticas.",
+                        "Confirmar responsable SGSI/IA, dueño del riesgo y autoridad de release.",
+                        "Seleccionar candidatas de S1 y abrir primera sesión con prompt de una sola tarjeta.",
+                        "Después de S1/S2, revisar capacidad y horizonte."
+                    ]
+                }
+            ]
+        }
+    ];
+
+    // Generar datos para las 40 tareas
+    const taskTitles = [
+        "Acordar meta, capacidad y una OT de referencia", "Reutilizar extractores y preparar muestra Field",
+        "Preparar repositorio privado y tablero GitHub", "Publicar entorno TEST con acceso controlado",
+        "Normalizar una OT y conservar evidencia", "Mostrar resumen verificable de una OT",
+        "Comprobar permisos, duplicados y correcciones", "Validar quick win y registrar próximos pasos",
+        "Extraer Field incremental con estados", "Asegurar reproceso y manejo de fallos",
+        "Dar visibilidad a jornadas y excepciones", "Definir A01 y línea base manual",
+        "Relacionar Microtrack, reloj y maestros", "Confirmar fuente de combustible y asignación",
+        "Construir vista de flota", "Observar frescura y errores de conectores",
+        "Acordar fórmula de costo por OT y pozo", "Publicar Gold de costos y líneas de negocio",
+        "Validar la UI en campo y sin conexión", "Ensayar restauración y separación de ambientes",
+        "Aprobar alcance y corpus de A01", "Integrar IA con límites y suspensión",
+        "Integrar A01 en la app", "Evaluar A01 y abuso de herramientas",
+        "Cerrar contrato funcional de ERP y nómina", "Construir intercambio administrativo acordado",
+        "Crear pantalla de revisión de novedades", "Generar lote aprobado y exportación",
+        "Preparar A02 con documentos y verdad", "Extraer documentos de A02 como borradores",
+        "Construir revisión de A02 con evidencia", "Medir costo y protección de IA",
+        "Aceptar resultado integral del piloto", "Conciliar período con Administración y prestador",
+        "Entregar guía de uso y comprobar adopción", "Ejecutar puerta de producción y transferencia",
+        "Evaluar una acción N2 de bajo impacto", "Implementar ejecutor con autorización e idempotencia",
+        "Mostrar aprobación de acción exacta", "Probar acción N2 y reversión"
+    ];
+
+    const tasksCategory = {
+        title: "Tareas (SDB-001 a SDB-040)",
+        items: []
+    };
+
+    // Plantilla estándar de cierre para casi todas las tareas
+    const defaultCierre = [
+        "Anotar resultado real de los criterios y pruebas; adjuntar referencia de evidencia permitida.",
+        "Registrar revisión y aceptación funcional pertinente.",
+        "Confirmar ambiente/resultado. Si falta una decisión humana, dejarla pendiente.",
+        "Entregar a Irma ID, cambio, evidencia, próximo paso y estado sugerido."
+    ];
+
+    for (let i = 1; i <= 40; i++) {
+        let id = `SDB-${String(i).padStart(3, '0')}`;
+        tasksCategory.items.push({
+            subtitle: `${id} · ${taskTitles[i-1]}`,
+            tasks: [
+                "Completar los pasos detallados de desarrollo ('Vamos paso a paso' en el PDT).",
+                "Generar los entregables concretos (archivos, docs, fixtures, etc).",
+                "Comprobar los criterios de aceptación especificados.",
+                ...defaultCierre
+            ]
+        });
+    }
+
+    checklistData.push(tasksCategory);
+
+    const container = document.getElementById('checklist-container');
+    let totalCheckboxes = 0;
+
+    // Renderizar HTML
+    checklistData.forEach((section, secIdx) => {
+        const sectionDiv = document.createElement('div');
+        sectionDiv.className = 'section';
+        sectionDiv.innerHTML = `<h2>${section.title}</h2>`;
+
+        section.items.forEach((item, itemIdx) => {
+            const details = document.createElement('details');
+            // Abrir la primera sección por defecto
+            if (secIdx === 0 && itemIdx === 0) details.open = true;
+
+            const summary = document.createElement('summary');
+            summary.textContent = item.subtitle;
+            details.appendChild(summary);
+
+            const checklistDiv = document.createElement('div');
+            checklistDiv.className = 'checklist';
+
+            item.tasks.forEach((task, taskIdx) => {
+                const checkId = `check_${secIdx}_${itemIdx}_${taskIdx}`;
+                totalCheckboxes++;
+
+                const checkItem = document.createElement('div');
+                checkItem.className = 'check-item';
+
+                const input = document.createElement('input');
+                input.type = 'checkbox';
+                input.id = checkId;
+
+                const label = document.createElement('label');
+                label.htmlFor = checkId;
+                label.textContent = task;
+
+                checkItem.appendChild(input);
+                checkItem.appendChild(label);
+                checklistDiv.appendChild(checkItem);
+            });
+
+            details.appendChild(checklistDiv);
+            sectionDiv.appendChild(details);
+        });
+
+        container.appendChild(sectionDiv);
+    });
+
+    // Lógica interactiva y LocalStorage
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    
+    function updateProgress() {
+        let checkedCount = 0;
+        checkboxes.forEach(cb => {
+            if (cb.checked) {
+                checkedCount++;
+                cb.closest('.check-item').classList.add('completed');
+            } else {
+                cb.closest('.check-item').classList.remove('completed');
+            }
+        });
+
+        const percentage = totalCheckboxes === 0 ? 0 : Math.round((checkedCount / totalCheckboxes) * 100);
+        document.getElementById('progressBar').style.width = percentage + '%';
+        document.getElementById('progressText').textContent = `${percentage}% (${checkedCount}/${totalCheckboxes})`;
+    }
+
+    function saveState() {
+        const state = {};
+        checkboxes.forEach(cb => {
+            state[cb.id] = cb.checked;
+        });
+        localStorage.setItem('sudbau_checklist_state', JSON.stringify(state));
+    }
+
+    function loadState() {
+        const saved = localStorage.getItem('sudbau_checklist_state');
+        if (saved) {
+            const state = JSON.parse(saved);
+            checkboxes.forEach(cb => {
+                if (state[cb.id]) {
+                    cb.checked = true;
+                }
+            });
+        }
+        updateProgress();
+    }
+
+    checkboxes.forEach(cb => {
+        cb.addEventListener('change', () => {
+            updateProgress();
+            saveState();
+        });
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', () => {
+        if(confirm('¿Estás seguro de que deseas reiniciar todo el progreso?')) {
+            checkboxes.forEach(cb => cb.checked = false);
+            updateProgress();
+            localStorage.removeItem('sudbau_checklist_state');
+        }
+    });
+
+    // Cargar estado al iniciar
+    loadState();
+</script>
+</body>
+</html>
